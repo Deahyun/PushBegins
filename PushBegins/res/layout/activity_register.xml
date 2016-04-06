@@ -1,0 +1,129 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/lightLightGray"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="12dp"
+        android:orientation="vertical" >
+
+        <RelativeLayout 
+            android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+	        <TextView
+	            android:id="@+id/textView1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerInParent="true"
+	            android:text="Push Begins"
+	            android:textColor="@color/textGray"
+	            android:textStyle="normal|bold"
+	            android:textSize="28sp" />
+		</RelativeLayout>
+        <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical">
+	        <View
+	            android:layout_width="fill_parent"
+	            android:layout_height="8dp" />
+	        <View
+	            android:layout_width="fill_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/lineSeperatorColor" />
+	        <View
+	            android:layout_width="fill_parent"
+	            android:layout_height="8dp" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/user1"
+            android:orientation="vertical" >
+	        <TextView
+	            android:id="@+id/textView2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="앱에서 사용할 ID 종류를 선택하세요."
+	            android:textStyle="normal"
+	            android:textColor="@color/black"
+	            android:textSize="18sp" />
+
+	        	<RelativeLayout
+	        	    android:layout_width="fill_parent"
+	        	    android:layout_height="wrap_content" >
+
+	        	    <RadioGroup
+	        	        android:id="@+id/radio_id_kind"
+	        	        android:layout_width="wrap_content"
+	        	        android:layout_height="wrap_content"
+	        	        android:layout_alignParentLeft="true"
+	        	        android:orientation="horizontal" >
+
+	        	        <RadioButton
+	        	            android:id="@+id/radio_email"
+	        	            android:layout_width="wrap_content"
+	        	            android:layout_height="30dp"
+	        	            android:text="이메일"
+	        	            android:textColor="@color/black" />
+	        	        <RadioButton
+	        	            android:id="@+id/radio_phone"
+	        	            android:layout_width="wrap_content"
+	        	            android:layout_height="30dp"
+	        	            android:layout_marginLeft="5dp"
+	        	            android:layout_marginRight="5dp"
+	        	            android:text="전화번호"
+	        	            android:textColor="@color/black" />
+	        	        <RadioButton
+	        	            android:id="@+id/radio_cid"
+	        	            android:layout_width="wrap_content"
+	        	            android:layout_height="30dp"
+	        	            android:layout_marginLeft="5dp"
+	        	            android:layout_marginRight="5dp"
+	        	            android:text="고유 ID"
+	        	            android:textColor="@color/black" />
+	        	    </RadioGroup>
+	        	</RelativeLayout>
+
+        </LinearLayout>
+		<View
+            android:layout_width="fill_parent"
+            android:layout_height="24dp" />
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="종류에 맞는 아이디를 입력하세요"
+            android:singleLine="true">
+
+            <requestFocus />
+        </EditText>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="24dp" />
+        <Button
+            android:id="@+id/buttonYes"
+            android:layout_width="fill_parent"
+            android:layout_height="34dp"
+            android:background="@drawable/round_button1"
+            android:text="저장" />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="4dp" />
+        <Button
+            android:id="@+id/buttonNo"
+            android:layout_width="fill_parent"
+            android:layout_height="34dp"
+            android:background="@drawable/round_button1"
+            android:text="취소" />
+
+    </LinearLayout>
+    
+</LinearLayout>

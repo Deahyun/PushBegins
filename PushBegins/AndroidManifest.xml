@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.entertera.pushbegins"
+    android:versionCode="3"
+    android:versionName="1.0.3" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21" />
+
+    <!-- (시작 1) push 사용을 위해서 이 부분을 추가하세요 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <!-- package 이름(xxx.xxx.xxx)에 맞춰서 xxx.xxx.xxx.permission.C2D_MESSAGE 으로 변경해 주세요 -->
+    <uses-permission android:name="com.entertera.pushbegins.permission.C2D_MESSAGE" />
+
+    <permission
+        android:name="com.entertera.pushbegins.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <!-- (종료 1) push 사용을 위해서 이 부분을 추가하세요 -->
+
+
+    <!-- 전화번호를 얻기 위해서 필요한 부분 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar" >
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- (시작 2) push 사용을 위해서 이 부분을 추가하세요 -->
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <!-- package 이름(xxx.xxx.xxx)에 맞춰서 xxx.xxx.xxx 으로 변경해 주세요 -->
+                <category android:name="com.entertera.pushbegins" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".GCMIntentService" />
+        <!-- (종료 2) push 사용을 위해서 이 부분을 추가하세요 -->
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".ChangeInfoActivity"
+            android:label="@string/title_activity_change_info"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".PushListActivity"
+            android:label="@string/title_activity_push_list"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".PushDetailActivity"
+            android:label="@string/title_activity_push_detail"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".SendMessageActivity"
+            android:label="@string/title_activity_send_message"
+            android:screenOrientation="portrait" >
+        </activity>
+    </application>
+
+</manifest>

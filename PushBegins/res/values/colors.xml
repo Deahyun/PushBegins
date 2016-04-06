@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="tabMedium">#2B2B2B</color>
+	<color name="tabDark">#000000</color>
+	<color name="tabTransparent">#10ffffff</color>
+	<color name="transparent">#00000000</color>
+	
+	<color name="black">#ff000000</color>
+	<color name="gray">#ff808080</color>
+	<color name="lightGray">#ffb0b0b0</color>
+	<color name="blue">#ff1111ff</color>
+	<color name="pink">#ffff1111</color>
+	<color name="orange">#ffffa500</color>
+	<color name="gold">#ffffd700</color>
+	
+	<color name="white">#ffffffff</color>
+	<color name="red">#ffff0000</color>
+	<color name="darkBlue">#ff00516a</color>
+	
+	<color name="lightLightGray">#fff9f9f9</color>
+	<color name="textGray">#ff665544</color>
+	<color name="user1">#ffdbeef4</color>
+	<color name="user2">#ffdbf1ff</color>
+	<color name="user3">#ffddffff</color>
+	
+	<color name="lineSeperatorColor">#FF909090</color>
+	<color name="tabLineSeperatorColor">#FF00a0ab</color>
+  
+	<color name="tabSelected">#f0f00000</color>
+	<color name="tabUnselected">#f000f000</color>
+	
+	<color name="user_color_1">#ff665544</color>
+	
+
+	<!--
+	<color name="tabSelected">#ff1a1a1a</color>
+	<color name="tabUnselected">#ff1a1a1a</color>
+	
+	<color name="tabSelected">#ffaabbcc</color>
+	<color name="tabUnselected">#ffaabbcc</color>
+	-->
+</resources>
