@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!--  순서가 바뀌면 오류발생. 상대경로는 오류발생. -->
+    <properties resource="com/site/config/db.properties" />
+    
+	<!-- Type alias -->
+	<typeAliases>
+		<!-- user specific -->
+		<typeAlias alias="DeviceInfo" type="com.site.entity.DeviceInfo" />
+		<typeAlias alias="GcmDeviceInfo" type="com.site.entity.GcmDeviceInfo" />
+		<typeAlias alias="PushUserInfo" type="com.site.entity.PushUserInfo" />
+		<typeAlias alias="RegisterGcmInfo" type="com.site.entity.RegisterGcmInfo" />
+		<typeAlias alias="RegisterApnsInfo" type="com.site.entity.RegisterApnsInfo" />
+		<typeAlias alias="KeyTokenInfo" type="com.site.entity.KeyTokenInfo" />
+		<typeAlias alias="GroupWorkInfo" type="com.site.entity.GroupWorkInfo" />
+		<typeAlias alias="ApnsDeviceInfo" type="com.site.entity.ApnsDeviceInfo" />
+		<typeAlias alias="PushMessageInfo" type="com.site.entity.PushMessageInfo" />
+		<typeAlias alias="CustomerMessageInfo" type="com.site.entity.CustomerMessageInfo" />
+		<typeAlias alias="PushRequest" type="com.site.entity.PushRequest" />
+		<typeAlias alias="PushResponse" type="com.site.entity.PushResponse" />
+		<typeAlias alias="DeviceMapInfo" type="com.site.entity.DeviceMapInfo" />
+		<typeAlias alias="CommonDeviceInfo" type="com.site.entity.CommonDeviceInfo" />
+		<typeAlias alias="ExtSiteDeviceInfo" type="com.site.entity.ExtSiteDeviceInfo" />
+		<typeAlias alias="DeviceTokenExInfo" type="com.site.entity.DeviceTokenExInfo" />
+		<typeAlias alias="DeviceIdInfo" type="com.site.entity.DeviceIdInfo" />
+	</typeAliases>
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+
+	<!-- UserMap.xml 등록 -->
+	<mappers>
+		<mapper resource="com/site/sqlmap/UserMap.xml" />
+	</mappers>
+
+</configuration>
