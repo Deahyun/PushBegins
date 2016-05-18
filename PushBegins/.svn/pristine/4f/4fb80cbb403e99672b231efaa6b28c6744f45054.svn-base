@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Push Begins</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_change_info">ChangeInfoActivity</string>
+    <string name="title_activity_push_list">PushListActivity</string>
+    <string name="title_activity_push_detail">PushDetailActivity</string>
+    <string name="title_activity_send_message">SendMessageActivity</string>
+
+</resources>

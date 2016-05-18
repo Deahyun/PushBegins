@@ -222,6 +222,52 @@ public class UserDb {
 	}
 	
 	//
+	public boolean confirmMessage(long m_id) {
+		// m_id 가 없는 메시지는 오류로 처리한다.
+		if ( !hasMessageId(m_id) ) {
+			return false;
+		}
+		
+		boolean bResult = false; 
+		strSql = String.format(
+				" UPDATE TABLE " + DbDef.MSG_CNT_TABLE_NAME + 
+				"  SET m_confirm = 1 WHERE m_id = %d",  m_id); 
+		
+		db = mHelper.getWritableDatabase();
+		try {
+			db.execSQL(strSql);
+			bResult = true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		} finally {
+			mHelper.close();
+		}
+				
+		return bResult;
+	}
+	
+	//
+	public long getLastMessageId() {
+		strSql = "SELECT MAX(m_id) FROM " + DbDef.MSG_CNT_TABLE_NAME;
+
+		db = mHelper.getReadableDatabase();
+		Cursor cursor;
+		cursor = db.rawQuery(strSql, null);
+		
+		long lRes = 0;
+		while ( cursor.moveToNext() ) {
+			//lRes = cursor.getInt(0);
+			lRes = cursor.getLong(0);
+		}
+		cursor.close();
+		mHelper.close();
+		
+		return lRes;
+	}
+	
+	//
 	public void upgradeDb() {
 
 	}
@@ -412,10 +458,11 @@ class UserDbHelper extends SQLiteOpenHelper {
 				" mvalue TEXT NOT NULL );",
 				DbDef.CONFIG_TABLE_NAME );
 		db.execSQL(strSql);
+		
 		// SQLite 에서는 long 타입도 INTEGER 로 표현한다.
 		strSql = String.format(
 				" CREATE TABLE %s " +
-				" ( m_id  INTEGER NOT NULL PRIMARY KEY )",
+				" ( m_id  INTEGER NOT NULL PRIMARY KEY, m_confirm INTEGER NOT NULL DEFAULT 0 )",
 				DbDef.MSG_CNT_TABLE_NAME );
 		db.execSQL(strSql);
 		//

@@ -1,0 +1,31 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    
+	<!-- Tab margins -->
+    <dimen name="corner_radius">8dp</dimen>
+    <dimen name="tab_space_top">4dp</dimen>
+    <dimen name="tab_space">0dp</dimen>
+    <dimen name="tab_space_plus1">3dp</dimen>
+    <dimen name="tab_space_bottom_line">36dp</dimen>
+    <dimen name="tab_space_unselected_top">6dp</dimen>
+    <!-- User specific -->
+    <dimen name="chat_button_margin">8dp</dimen>
+    <dimen name="zero_space">0dp</dimen>
+    <dimen name="settings_layout_margin">8dp</dimen>
+    <dimen name="frield_blog_margin">12dp</dimen>
+	<dimen name="chat_icon_size">48dp</dimen>
+	<dimen name="keyboard_height">230dp</dimen>
+	<!--  -->
+	<dimen name="checkbox_height">36dp</dimen>
+	<dimen name="register_box_width">234dp</dimen>
+	<dimen name="register_box_height">28.5dp</dimen>
+	<dimen name="chatting_box_width">234dp</dimen>
+	<dimen name="chatting_box_height">28.5dp</dimen>
+	<dimen name="group_number_box_width">132.5dp</dimen>
+	<dimen name="group_number_box_height">28.5dp</dimen>
+	<!-- Font size -->
+	<dimen name="terms_font_size">12dp</dimen>
+</resources>

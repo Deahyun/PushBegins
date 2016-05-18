@@ -266,6 +266,47 @@ public class MiniPushObject {
 	}
 	
 	//
+//	// device_seq = MiniPushObject.getInstance().getValue(DbDef.DEVICE_SEQ)
+//	public boolean confirmMessage(long message_id, int device_seq) {
+	public boolean confirmMessage(long m_id) {
+		if (ctx == null) {
+			Log.e(tag, "initilizeObject needed");
+			return false;
+		}
+		if (!isNetworkAvalable()) {
+			Log.e(tag, "internet connection invalid");
+			return false;
+		}
+		if ( m_id <= 0 ) {
+			Log.e(tag,"message id invalid");
+			return false;
+		}
+		UserDb db = UserDb.getInstance();
+		String strSeq = db.getValue(DbDef.DEVICE_SEQ);
+		int nSeq = 0;
+		try {
+			nSeq = Integer.parseInt(strSeq);
+		} catch ( Exception e ) {
+			//nSeq = 0;
+			Log.e(tag,"device_seq invalid");
+			return false;
+		}
+	
+		// verify message id to server
+		UserHttpClient client = UserHttpClient.getInstance();
+		if ( !client.confirmMessage(m_id, nSeq) ) {
+			Log.e(tag, "contirm message from server failure");
+			return false;
+		}
+		
+		if ( !db.confirmMessage(m_id) ) {
+			Log.e(tag, "contirm message faliure");
+			return false;
+		}
+		
+		return true;
+	}
+	//
 	public boolean sendCusomerMessage(String strMessage) {
 		if (ctx == null) {
 			Log.e(tag, "initilizeObject needed");
@@ -460,6 +501,12 @@ public class MiniPushObject {
 	public void deleteKey(String strKey) {
 		UserDb db = UserDb.getInstance();
 		db.deleteKey(strKey);
+	}
+	
+	//
+	public long getLastMessageId() {
+		UserDb db = UserDb.getInstance();
+		return db.getLastMessageId();
 	}
 	
 	////

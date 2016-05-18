@@ -1,0 +1,126 @@
+package com.entertera.pushbegins;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.entertera.pushbeginslib.MiniPushObject;
+
+public class ChangeInfoActivity extends Activity {
+	Context ctx;
+	Bundle extra;
+	Intent resIntent;
+	//
+	EditText mEdit;
+	//
+	MiniPushObject obj = MiniPushObject.getInstance();
+	//
+	String tag = "change_info";
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_change_info);
+		//
+		ctx = this;
+		extra = new Bundle();
+		resIntent = getIntent();
+		//
+		mEdit = (EditText)findViewById(R.id.editText1);
+		//
+		OnBtnClickListener btnListener = new OnBtnClickListener();
+		//
+		Button btnYes = (Button)findViewById(R.id.buttonYes);
+		Button btnNo = (Button)findViewById(R.id.buttonNo);
+		//
+		btnYes.setOnClickListener(btnListener);
+		btnNo.setOnClickListener(btnListener);
+		
+		//
+		String strPhoneNumber = obj.getValue("phone");
+		if ( strPhoneNumber == null || strPhoneNumber.length() == 0 ) {
+			strPhoneNumber = "01099999999";
+		}
+		mEdit.setText(strPhoneNumber);
+		//
+		mEdit.setSelection(mEdit.length());
+	}
+	
+	//
+	public void activityReturn(int nResult) {
+		
+		if ( nResult > 1 ) {
+			this.setResult(RESULT_CANCELED, resIntent);
+			this.finish();
+			return;
+		}
+		extra.putInt("intParam", nResult);
+		resIntent.putExtras(extra);
+		//
+		this.setResult(RESULT_OK, resIntent);
+		this.finish();
+	}
+	//
+	
+	//
+	class OnBtnClickListener implements OnClickListener {
+		//
+		//
+		public void onClick(final View view) {
+
+			//
+			int nCase = view.getId();
+			if ( nCase == R.id.buttonYes ) {
+				//
+				boolean bAvailableNetwork = obj.isNetworkAvalable();
+				if ( !bAvailableNetwork ) {
+					Toast.makeText(ctx, "인터넷에 연결할 수 없습니다. 인터넷 연결을 확인후 다시 시도해 주세요", Toast.LENGTH_SHORT).show();
+					return;
+				}
+				//
+				//
+				String strPhoneNumber = mEdit.getText().toString();
+				if ( strPhoneNumber.length() < 6 ) {
+					Toast.makeText(ctx, "전화번호는 6자 보다 많아야 합니다. ", Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				//sendVerifyEmail
+				WaitDlg dlg = new WaitDlg(ctx, "Network progress", "Processing...");
+				dlg.start();
+				
+				if ( obj.registerGcm(strPhoneNumber) ) {
+					// 등록 성공
+					Log.i(tag, "전화번호 변경 성공");
+					Toast.makeText(ctx, "전화번호 변경 성공", Toast.LENGTH_SHORT).show();
+				} else {
+					// 등록 실패
+					Log.i(tag, "전화번호 변경 실패");
+					Toast.makeText(ctx, "전화번호 변경 실패", Toast.LENGTH_SHORT).show();
+					WaitDlg.stop(dlg);
+					return;
+				}				//
+				WaitDlg.stop(dlg);
+				
+				// 등록성공후 처리
+				obj.setKeyValue("phone", strPhoneNumber);
+				activityReturn(1);
+				
+			} else if ( nCase == R.id.buttonNo ) {
+				activityReturn(0);
+				
+			} else {
+
+			}
+		}
+		//
+	}
+	
+	////////
+}

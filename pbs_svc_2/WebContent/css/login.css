@@ -1,0 +1,65 @@
+@CHARSET "UTF-8";
+/*
+* {
+	font-family: Arial, Verdana, sans-serif;
+	color: #665544;}
+*/
+body {
+	text-align: center;}
+label {
+	vertical-align: middle;}
+input {
+	font-family: Arial, Verdana, sans-serif;
+	font-size:18px;
+	color: #665544;
+	border-bottom: 1px dotted #dcdcdc;
+	border-top: none;
+	border-right: none;
+	border-left: none;
+	padding: 5px;
+	width: 280px;
+	margin: 10px 0px 10px 0px;
+	/* margin-bottom: 20px; */
+	vertical-align: middle;}
+input:focus {
+	border: 1px dotted #dcdcdc;
+	outline: none;}
+input#login {
+	color: #ffffff;
+	background-color: #665544;
+	border: none;
+	border-radius: 5px;
+	width: 80px;}
+input#login:hover {
+	color: #665544;
+	background-color: #efefef;}
+#find_pwd {
+	padding: 5px;
+	text-align: right;
+	margin: 1px 80px 1px 40px;}
+fieldset {
+	font-family: Arial, Verdana, sans-serif;
+	color: #665544;
+	width: 400px;
+	border: 1px solid #dcdcdc;
+	border-radius: 10px;
+	padding: 20px;
+	margin: 0px auto 0px auto;
+	text-align: left;
+	position:relative;
+	top: 150px}
+legend {
+	background-color: #efefef;
+	border: 1px solid #dcdcdc;
+	border-radius: 10px;
+	padding: 10px 20px;
+	text-align: left;
+	text-transform: uppercase;}
+	
+#message {
+	color: #aa1111;
+	width: 400px;
+	position:relative;
+	top: 160px;
+	margin: 0px auto 0px auto;}
+}

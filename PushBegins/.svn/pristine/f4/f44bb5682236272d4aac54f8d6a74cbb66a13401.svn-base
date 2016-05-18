@@ -1,0 +1,5 @@
+package com.entertera.pushbeginslib;
+
+public class GcmDeviceInfo {
+	public String udid, device_id, device_token, proj_num;
+}

@@ -1,0 +1,299 @@
+@charset "utf-8";
+
+/* ---------- import stylesheets ---------- */
+@import url("reset.css");
+
+/* ---------- common ---------- */
+html, body {width:100%; height:100%; font-size:12px; font-family: dotum,"돋움",NanumGothic,Gulim; color:#363636;}
+body {background:url(../images/body_bg.jpg) repeat-x scroll 0 0 #DEDEDE; min-height:750px; height:auto;}
+input, select, textarea { font-size:12px; font-family: dotum,"돋움",NanumGothic,Gulim; color:#363636; background:#FFFFFF;}
+
+a:link {color: #363636; text-decoration:none;}
+a:active {color: #363636; text-decoration:none;}
+a:visited {color: #363636; text-decoration:none;}
+a:hover {color: #363636; text-decoration:underline;}
+
+input {font-size:12px; vertical-align:middle;}
+textarea {resize: none; border:1px solid #a0aabb; padding:5px; line-height:18px;}
+select {width:120px; height:18px; line-height:18px; border:1px solid #a0aabb;}
+img { vertical-align:middle;}
+
+.input_text {height:19px; padding:0 5px; border:1px solid #d2d2d2; line-height:19px;}
+.bold {font-weight:bolder;}
+
+.alignL {text-align:left;}
+.alignC {text-align:center;}
+.alignR {text-align:right;}
+.in_block {display: inline-block;}
+
+.w80 {width:80px;}
+.W90 {width:90%;}
+.W98 {width:98%;}
+.W100 {width:100%;}
+
+.w110 {width:110px;}
+.w140 {width:140px;}
+.w400 {width:400px;}
+
+.h100 {height:100px;}
+
+.P10 {padding:10px;}
+.PR5 {padding-right:5px;}
+.PL5 {padding-left:5px;}
+.MB5 {margin-bottom:5px;}
+.MT15 {margin-top:15px;}
+.MR5 {margin-right:5px;}
+
+/* ---------- layout ---------- */
+#wrap {margin:0 auto; width:1000px; }
+#header {float:left; width:1000px; height:127px; background:#cbcbcb;}
+#content {float:left; width:920px; padding:0 40px; min-height:600px; height:auto; background:#FFF;}
+
+/* ---------- login ---------- */
+#login_wrap {margin:0 auto; margin-top:100px; width:440px; height:392px; text-align:center;}
+#login_wrap > img {margin}
+#login_box {width:436px; height:266px; margin-top:45px;border:2px solid #ccc; background:url(../images/bg_login_box.gif) no-repeat; text-align:left;}
+#login_box .login{float:left; width:293px; margin-left:70px; margin-top:158px;}
+#login_box .login > li {float:left; height:20px; margin-bottom:8px;}
+#login_box .btn_login {margin-top:-28px; margin-left:8px;}
+#login_box .login_text {height:18px; line-height:18px; padding: 0 5px; border:1px solid #ccc; background:#f4f4f4; color:#464646;}
+#login_box .login_title {margin-right:10px; vertical-align:middle;}
+
+/* ---------- header ---------- */
+#header .logout {height:30px; text-align:right; background:url(../images/bg_logout.gif) repeat-x; }
+#header span {font-size:11px; margin-right:20px; line-height:30px; font-weight:bolder;}
+#header .menu {height:82px; background:#FFF;}
+#header .menu > img {float:left; margin-top:15px; margin-left:20px;}
+#header ul {float:right; margin-right:50px; margin-top:15px; line-height:52px;}
+#header ul > li {float:left; display:inline-block; width:83px; font-size:14px; font-weight:bolder; padding:0 30px; background: none;}
+#header ul > li.menu_bar_no {float:left; display:inline-block; width:83px; font-size:14px; font-weight:bolder; padding:0 30px; background: none;}
+
+/* ---------- content ---------- */
+/* --- NEWS 리스트 --- */
+a.number:link {display:inline-block; padding:3px 5px 2px 5px; margin-right:5px; border:1px solid #fff; color: #777; text-decoration:none; font-size:11px; font-weight:bolder; line-height:13px;}
+a.number:active {display:inline-block; padding:3px 5px 2px 5px; margin-right:5px; border:1px solid #fff; color: #777; text-decoration:none; font-size:11px; font-weight:bolder; line-height:13px;}
+a.number:visited {display:inline-block; padding:3px 5px 2px 5px; margin-right:5px; border:1px solid #fff; color: #777; text-decoration:none; font-size:11px; font-weight:bolder; line-height:13px;}
+a.number:hover {display:inline-block; padding:3px 5px 2px 5px; margin-right:5px; border:1px solid #ef6922; color: #ef6922; text-decoration:none; font-size:11px; font-weight:bolder; line-height:13px;}
+
+#content .title {width:100%; height:29px; background:url(../images/bg_title.gif) repeat-x 0 65px; margin-bottom:25px; padding-top:40px; font-size:14px; font-weight:bolder; font-family: dotum,"돋움",NanumGothic,Gulim; }
+#content .title > img {margin-top:-2px;}
+#content .list_category {height:34px; background:url(../images/bg_list_category.gif) repeat-x; }
+#content .list_category td {line-height:34px;}
+#content .list_category img { vertical-align:middle;}
+#content .news_list td {padding:3px 15px; height:25px; line-height:18px; border-bottom:1px solid #dadada;}
+#content .news_list .td1 {width:70px;}
+#content .news_list .td2 {width:;}
+#content .news_list .td3 {width:90px;}
+#content .news_list .td3_2 {width:120px;}
+#content .list_num_area {width:100%; margin:30px 0;}
+#content .list_num {float:left; margin-left:250px;}
+#content .list_num > li {float:left; display:inline-block; }
+#content .list_num .selected {display:inline-block; padding:3px 5px 2px 5px; margin-right:5px; border:1px solid #ef6922; color: #ef6922; text-decoration:none; font-size:11px; font-weight:bolder; line-height:13px;}
+#content .member_list td {padding:3px 15px; height:45px; line-height:28px; border-bottom:1px solid #ffffff;}
+
+/* --- NEWS 보기 --- */
+#content .news_view {height:34px; border-top:2px solid #696969;}
+#content .news_view td {line-height:34px; border-bottom:1px solid #dadada;}
+#content .news_comment {width:890px; min-height:100px; height:auto; padding:15px; line-height:25px !important;}
+#content .file_img {padding:30px; text-align:center;}
+#content .news_title {padding:0 15px;}
+#content .list_button {float:right; margin:20px 0;}
+#content .list_button > li {float:left; display:inline-block; margin-right:10px;}
+
+/* --- NEWS 수정 --- */
+#content .table_style1 {border-top:2px solid #696969; border-left:1px solid #dadada;}
+#content .label {height:35px; padding-left:22px; background-color: #f4f4f4; border-right:1px solid #dadada; border-bottom:1px solid #dadada; font-size:12px; font-weight:bolder;}
+#content .value {height:35px; padding-left:22px; border-right:1px solid #dadada; border-bottom:1px solid #dadada;}
+#content .textarea {border:1px solid #d2d2d2; width:700px; padding:10px; margin:7px 0; line-height:18px;}
+#content .list_button2 {float:right; margin:30px 0; }
+#content .list_button2 ul {float:left;}
+#content .list_button2 ul > li {float:left; display:inline-block; margin-right:10px;}
+
+/* -- 회원가입 -- */
+#join_user {
+    width: 420px;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -220px;
+    margin-top: -150px;
+}
+
+#join_user input[name="alias"],#join_user input[name="class_info"],#join_user input[type="password"] {
+    width: 100%;
+    height: 30px;
+    positon: relative;
+    margin-top: 7px;
+    font-size: 14px;
+    color: #444;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, .49);
+ 
+    padding-left: 10px;
+
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+    border-radius: 6px;
+ 
+    background-color: #fff;
+    -webkit-box-shadow: inset 0px 2px 0px #d9d9d9;
+    box-shadow: inset 0px 2px 0px #d9d9d9;
+}
+
+#join_user input[name="email"] {
+    width: 50%;
+    height: 30px;
+    positon: relative;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #444;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, .49);
+ 
+    padding-left: 10px;
+    border-radius: 6px;
+    background-color: #fff;
+    -webkit-box-shadow: inset 0px 2px 0px #d9d9d9;
+    box-shadow: inset 0px 2px 0px #d9d9d9;
+}
+
+#code {
+    width: 30%;
+    height: 30px;
+    positon: relative;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #444;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, .49);
+ 
+    padding-left: 8px;
+    border-radius: 6px;
+    background-color: #fff;
+    -webkit-box-shadow: inset 0px 2px 0px #d9d9d9;
+    box-shadow: inset 0px 2px 0px #d9d9d9;
+}
+
+
+#school_search, #email_verify {
+	width: 105%;
+    height: 34px;
+}
+
+#join_user input[name="school_name"] {
+    width: 61%;
+    height: 30px;
+    positon: relative;
+    margin-top: 0px;
+    font-size: 14px;
+    color: #444;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, .49);
+ 
+    padding-left: 10px;
+
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+    border-radius: 6px;
+ 
+    background-color: #fff;
+    -webkit-box-shadow: inset 0px 2px 0px #d9d9d9;
+    box-shadow: inset 0px 2px 0px #d9d9d9;
+}
+
+#join_user input[name="search"] {
+    width: 33%;
+    height: 32px;
+    margin-top: 0px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0px -1px 0px #5b6ddc;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, .49);
+ 
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+    border-radius: 6px;
+ 
+    background-color: #5466da;
+    cursor: pointer;
+     
+    -webkit-box-shadow: inset 0px 1px 0px #9ab1ec;
+    box-shadow: inset 0px 1px 0px #9ab1ec;
+}
+
+#join_user input[name="verify"] {
+	width: 11%;
+    height: 32px;
+    margin-top: 4px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0px -1px 0px #5b6ddc;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, .49);
+ 
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+    border-radius: 6px;
+ 
+    background-color: #5466da;
+    cursor: pointer;
+     
+    -webkit-box-shadow: inset 0px 1px 0px #9ab1ec;
+    box-shadow: inset 0px 1px 0px #9ab1ec;
+}
+
+/* #join_user input[name="join"] { */
+#join {
+    width: 103%;
+    height: 40px;
+    margin-top: 7px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0px -1px 0px #5b6ddc;
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, .49);
+ 
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+    border-radius: 6px;
+ 
+    background-color: #5466da;
+    cursor: pointer;
+     
+    -webkit-box-shadow: inset 0px 1px 0px #9ab1ec;
+    box-shadow: inset 0px 1px 0px #9ab1ec;
+ }
+ 
+#join_user input[type="text"]:focus,#join_user input[type="password"]:focus {
+    -webkit-box-shadow: inset 0px 2px 0px #a7a7a7;
+    box-shadow: inset 0px 2px 0px #a7a7a7;
+}
+
+ /*
+#join_user input[name="join"]:active {
+    background-color: #7588e1;
+    -webkit-box-shadow: inset 0px 1px 0px #93a9e9;
+    box-shadow: inset 0px 1px 0px #93a9e9;
+}
+
+ #join_user input:first-child {
+    margin-top: 0px;
+}
+*/
+#join_user label {
+    display: none;
+}
+
+.placeholder {
+    color: #444;
+}

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.entertera.pushbeginslib.DbDef;
 import com.entertera.pushbeginslib.MiniPushObject;
 
 public class SendMessageActivity extends Activity {
@@ -42,6 +43,12 @@ public class SendMessageActivity extends Activity {
 		btnBack.setOnClickListener(btnListener);
 		btnSend.setOnClickListener(btnListener);
 		btnCancel.setOnClickListener(btnListener);
+		
+		// For debug
+		if ( false ) {
+			String strSeq = MiniPushObject.getInstance().getValue(DbDef.DEVICE_SEQ);
+			Log.i(tag,  "device_seq -> " + strSeq);
+		}
 	}
 	
 	//

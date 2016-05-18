@@ -1,0 +1,88 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/lightLightGray"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="12dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Push Begins"
+            android:textColor="@color/textGray"
+            android:textStyle="normal|bold"
+            android:textSize="28sp" />
+        <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical">
+	        <View
+	            android:layout_width="fill_parent"
+	            android:layout_height="8dp" />
+	        <View
+	            android:layout_width="fill_parent"
+	            android:layout_height="1dp"
+	            android:background="@color/gray" />
+	        <View
+	            android:layout_width="fill_parent"
+	            android:layout_height="8dp" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/user1"
+            android:orientation="vertical" >
+	        <TextView
+	            android:id="@+id/textView2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="전화번호 정보를 변경하시겠습니까?"
+	            android:textStyle="normal"
+	            android:textColor="@color/black"
+	            android:textSize="18sp" />
+        </LinearLayout>
+		<View
+            android:layout_width="fill_parent"
+            android:layout_height="24dp" />
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="전화번호를 입력하세요"
+            android:singleLine="true"
+            android:inputType="number" >
+
+            <requestFocus />
+        </EditText>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="24dp" />
+        <Button
+            android:id="@+id/buttonYes"
+            android:layout_width="fill_parent"
+            android:layout_height="34dp"
+            android:background="@drawable/round_button1"
+            android:text="예" />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="4dp" />
+        <Button
+            android:id="@+id/buttonNo"
+            android:layout_width="fill_parent"
+            android:layout_height="34dp"
+            android:background="@drawable/round_button1"
+            android:text="아니오" />
+
+    </LinearLayout>
+    
+</LinearLayout>

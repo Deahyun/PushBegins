@@ -100,6 +100,11 @@ public class MainActivity extends Activity {
 				Intent intent = new Intent(g_ctx, PushListActivity.class);
 				startActivity(intent);
 				
+			} else if ( nCase == R.id.buttonConfirm ) {
+				MiniPushObject obj = MiniPushObject.getInstance();
+				long message_id = obj.getLastMessageId();
+				obj.confirmMessage(message_id);
+				
 			} else if ( nCase == R.id.buttonSendMessage ) {
 				Intent intent = new Intent(g_ctx, SendMessageActivity.class);
 				startActivity(intent);
@@ -148,10 +153,12 @@ public class MainActivity extends Activity {
 		//
 		Button btnChangeInfo = (Button)findViewById(R.id.buttonChangeInfo);
 		Button btnPushList = (Button)findViewById(R.id.buttonPushList);
+		Button btnConfirm = (Button)findViewById(R.id.buttonConfirm);
 		Button btnSendMessage = (Button)findViewById(R.id.buttonSendMessage);
 		//
 		btnChangeInfo.setOnClickListener(btnListener);
 		btnPushList.setOnClickListener(btnListener);
+		btnConfirm.setOnClickListener(btnListener);
 		btnSendMessage.setOnClickListener(btnListener);
 	}
 	

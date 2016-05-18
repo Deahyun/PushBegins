@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.site.dao.UserMapper">
+
+    <!-- 선택적 query 예제 
+   	<if test="id_kind == 'e'">
+    	email = #{device_id}
+	</if>
+	<if test="id_kind == 'p'">
+    	phone = #{device_id}
+	</if>
+	<if test="id_kind == 'c'">
+    	cid = #{device_id}
+	</if>  
+     -->
+    
+    <!-- GcmDevice -->
+    <select id="getGcmDeviceSeq" resultType="int">
+	    select coalesce(
+			( select seq from tb_device where device_type = 'a' and device_token = #{device_token}
+			),
+			0
+		)
+	</select>
+	
+    <!-- public int getGcmDeviceSeq2(@Param("device_id") String strDeviceId); -->
+    <select id="getGcmDeviceSeq2" resultType="int">
+	    select coalesce(
+			( select seq from tb_device where device_id = #{device_id}
+			),
+			0
+		)
+	</select>
+
+    <delete id="deleteGcmDevice">
+		delete from tb_device
+		where device_type = 'a' and device_token = #{device_token}	
+	</delete>
+	
+    <insert id="insertGcmDevice" parameterType="GcmDeviceInfo">
+		insert into tb_device (device_type, device_token, app_info_id, device_id )
+		values ( 'a', #{device_token}, #{proj_num}, #{device_id} );
+	</insert>
+	
+    <update id="updateGcmDevice" parameterType="GcmDeviceInfo">
+		update tb_device
+		set device_type = 'a', device_token = #{device_token}, device_id = #{device_id}, last_login_tm = now()
+		where seq = #{seq}
+	</update>
+	
+	<!-- DeviceMap -->
+	<!-- public DeviceMapInfo "getGcmAppInfo"(@Param("proj_num") String strProjNum); -->
+	<!--
+	<select id="getGcmAppInfo" parameterType="string" resultType="DeviceMapInfo">
+		select seq as push_user_seq, push_name
+		from tb_gcm_app
+		where proj_num = #{proj_num}
+	</select>
+	-->
+	
+	<!-- public DeviceMapInfo getApnsAppInfo(@Param("app_id") String strAppId); -->
+	<select id="getApnsAppInfo" parameterType="string" resultType="DeviceMapInfo">
+		select seq as push_user_seq, push_name
+		from tb_apns_app
+		where app_id = #{app_id}
+	</select>
+	
+	<!-- PushUser -->
+	<insert id="insertPushUser" parameterType="PushUserInfo">
+		insert into tb_push_user (email, alias, pwd)
+		values ( #{email}, #{alias}, #{pwd} );
+	</insert>
+	
+	<select id="authPushUser" resultType="int">
+		select coalesce(
+			( select seq from tb_push_user
+			WHERE email = #{email}
+			AND pwd = #{pwd} ),
+			0
+		) 
+	</select>
+	
+	<update id="updatePushUser" parameterType="PushUserInfo">
+		update tb_push_user
+		set  alias = #{alias}, pwd = #{pwd}
+		where email = #{email}
+	</update>
+	
+	<delete id="deletePushUser" parameterType="string">
+		delete from tb_push_user
+		where email=#{email}
+	</delete>
+	
+	<select id="getPushUserSeq" parameterType="string" resultType="int">
+	    select coalesce(
+			( select seq from tb_push_user WHERE email = #{email} ),
+			0
+		)
+	</select>
+	
+	<!--  -->
+	
+	<!-- public List<String> getAllGcmDeviceTokenList(String strProjNum); -->
+	<select id="getAllGcmDeviceTokenList" parameterType="string" resultType="string">
+		select device_token
+		from tb_device
+		where device_type = 'a' 
+		and app_info_id = #{proj_num}
+	</select>
+	
+	<!-- 공통 서비스 -->
+	<!-- public DeviceTokenExInfo getDeviceTokenEx(@Param("device_id") String strDeviceId); -->
+	<select id="getDeviceTokenEx" resultType="DeviceTokenExInfo">
+		select seq, device_token
+		from tb_device
+		where device_id = #{device_id} 
+	</select>
+	
+	<!-- public String getGcmGroupDevicSeqList(GroupWorkInfo info); -->
+	
+	
+	<!-- 
+	public List<String> getGcmGroupDeviceTokenList(@Param("device_seq_list") List<Integer> device_seq_list); 
+	-->	
+	<!-- 
+	<select id="getGcmGroupDeviceTokenList" resultType="string">
+		select device_token
+		from tb_gcm_device
+		where seq in
+		<foreach item="item" index="index" collection="device_seq_list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+	</select>
+	 -->
+	<select id="getGcmGroupDeviceTokenList" resultType="string">
+		select device_token
+		from tb_device
+		where seq in
+		<foreach item="item" index="index" collection="device_seq_list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+	</select>
+
+	<!--
+	public List<String> getGroupGcmDeviceTokenList(@Param("proj_num")String strProjNum, @Param("list") List<String> lParam);
+	-->	
+	<select id="getGroupGcmDeviceTokenList" resultType="string">
+		select device_token
+		from tb_gcm_device
+		where device_id in 
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+		and proj_num = #{proj_num}
+	</select>
+	
+	<!-- public List<GcmDeviceInfo> getGcmDeviceList(String strProjNum); -->
+	<select id="getGcmDeviceList" parameterType="string" resultType="GcmDeviceInfo">
+		select seq, device_id, device_token
+		from tb_gcm_device
+		where proj_num = #{proj_num}
+	</select>
+
+	<!-- ApnsDevice -->
+	<!-- getApnsDeviceSeq(@Param("app_id") String strAppId, @Param("id_kind") String strIdKind, @Param("device_id") String strDeviceId); -->
+    <select id="getApnsDeviceSeq" resultType="int">
+	    select coalesce(
+			( select seq from tb_device where device_type = 'i' and device_token = #{device_token}
+			),
+			0
+		)
+	</select>
+	
+	<!-- public int getApnsDeviceSeq2(@Param("device_id") String strDeviceId); -->
+    <select id="getApnsDeviceSeq2" resultType="int">
+	    select coalesce(
+			( select seq from tb_device where device_id = #{device_id}
+			),
+			0
+		)
+	</select>
+	
+    <delete id="deleteApnsDevice">
+		delete from tb_device
+		where device_type = 'i' and device_token = #{device_token}
+	</delete>
+	    
+    <insert id="insertApnsDevice" parameterType="ApnsDeviceInfo">
+		insert into tb_device ( device_type, device_token, app_info_id, device_id )
+		values ( 'i', #{device_token}, #{app_id}, #{device_id} );
+	</insert>
+	
+    <update id="updateApnsDevice" parameterType="ApnsDeviceInfo">
+		update tb_device
+		set device_type = 'i', device_token = #{device_token}, device_id = #{device_id}, last_login_tm = now()
+		where seq = #{seq}
+	</update>
+	<!--  -->
+	
+	<!-- Push Message -->
+	<!-- public void putMessage(PushMessageInfo info); -->
+	<!--
+	<insert id="putMessage" parameterType="PushMessageInfo" useGeneratedKeys="true">
+	    <selectKey keyProperty="m_id" resultType="long" order="AFTER">
+			select MAX(m_id) from tb_push_message
+		</selectKey>
+		insert into tb_push_message (seq, total_cnt, success_cnt, message_type, user_data)
+		values ( #{seq}, #{total_cnt}, #{success_cnt}, #{message_type}, #{user_data} ) 
+	</insert>
+	-->
+	
+	<insert id="putMessage" parameterType="PushMessageInfo">
+		insert into tb_push_message (m_id, seq, push_name, user_seq, group_seq, total_cnt, success_cnt, message_type, alert, user_data)
+		values ( #{m_id}, #{seq}, #{push_name}, #{user_seq}, #{group_seq}, #{total_cnt}, #{success_cnt}, #{message_type}, #{alert}, #{user_data} ) 
+	</insert>
+	
+	<!--
+	public void updateMessageSendCount(@Param("m_id") long m_id, @Param("send_cnt") int send_cnt);
+	-->
+	<update id="updateMessageSendCount">
+		update tb_push_message
+		set  send_cnt = #{send_cnt}
+		where m_id = #{m_id}
+	</update>
+	
+	<!-- public void addMessageCount(long m_id); -->
+	<update id="addMessageCount" parameterType="long">
+		update tb_push_message
+		set  success_cnt = (
+			select success_cnt + 1 from tb_push_message where m_id = #{m_id}
+		)
+		where m_id = #{m_id}
+	</update>
+	
+	<!-- public void updateMessageSendConfirm(@Param("m_id") long m_id, @Param("device_seq") int device_seq); -->
+	<update id="updateMessageSendConfirm">
+		update tb_push_message
+		set send_array = send_array || device_seq
+		where m_id = #{m_id}
+	</update>
+	
+	<!-- public void confirmMessage(@Param("m_id") long m_id, @Param("device_seq") int device_seq); -->
+	<update id="confirmMessage">
+		update tb_push_message
+		set confirm_items = confirm_items || [device_seq, now()]::confirm_message
+		where m_id = #{m_id}
+	</update>
+	
+	<!-- public int getPushUserSeqA(String strProjNum); -->
+	<select id="getPushUserSeqA" parameterType="string" resultType="int">
+		select coalesce(
+			( select seq from tb_gcm_app
+			WHERE proj_num = #{proj_num} ),
+			0
+		) 
+	</select>
+	
+	<!-- public int getPushUserSeqI(String strAppId); -->
+	<select id="getPushUserSeqI" parameterType="string" resultType="int">
+		select coalesce(
+			( select seq from tb_apns_app
+			WHERE app_id = #{app_id} ),
+			0
+		) 
+	</select>
+	
+	<!-- public void addCustomerMessage(String strMessage);  --> 
+	<insert id="addCustomerMessage" parameterType="CustomerMessageInfo">
+		insert into tb_feedback_message (device_seq, user_seq, message)
+		values ( #{device_seq}, #{user_seq}, #{message} );
+	</insert>
+	
+	<!-- public String getUserData(long m_id); -->
+	<select id="getUserData" parameterType="long" resultType="string">
+		select user_data
+		from tb_push_message
+		where m_id = #{m_id}
+	</select>
+	
+	<!-- public List<PushMessageInfo>
+	getPushMessageList(@Param("user_seq" )int nUserSeq, @Param("start_pos") int nStartPos, @Param("page_size") int nPageSize);
+	-->
+	<select id="getPushMessageList" resultType="PushMessageInfo">
+		select total_cnt, send_cnt, success_cnt, to_char(reg_tm, 'YYYY-MM-DD HH24:MI:SS') as reg_tm, message_type, alert, user_data
+		from tb_push_message
+		where seq = #{user_seq}
+		order by m_id desc
+		offset #{start_pos} limit #{page_size}
+	</select>
+	
+	<!-- public List<CustomerMessageInfo> 
+	getCustomerMessageList(@Param("user_seq") int nUserSeq, @Param("start_pos") int nStartPos, @Param("page_size") int nPageSize);
+	-->
+	<!--
+	<select id="getCustomerMessageList" resultType="CustomerMessageInfo">
+		select device_seq, message, to_char(reg_tm, 'YYYY-MM-DD HH24:MI:SS') as reg_tm
+		from tb_feedback_message
+		where user_seq = #{user_seq}
+		order by msg_seq desc
+		offset #{start_pos} limit #{page_size}
+	</select>
+	-->
+	<select id="getCustomerMessageList" resultType="CustomerMessageInfo">
+		select device_id, message, to_char(a.reg_tm, 'YYYY-MM-DD HH24:MI:SS') as reg_tm
+		from tb_feedback_message a, tb_device b
+		where user_seq = #{user_seq}
+		and a.device_seq = b.seq 
+		order by msg_seq desc
+		offset #{start_pos} limit #{page_size}
+	</select>
+	
+	<!-- public String getDeviceId(@Param("device_seq") int nUserSeq); -->
+	<select id="getDeviceId" resultType="string">
+		select device_id
+		from tb_device
+		where seq = #{device_seq}
+	</select>
+	
+	<!-- public List<String> 
+	getAppList(@Param("user_seq") int nUserSeq, @Param("start_pos") int nStartPos, @Param("page_size") int nPageSize);
+	 -->
+	<select id="getAppList" resultType="string">
+		select push_name from tb_gcm_app where seq = #{user_seq}
+		union
+		select push_name from tb_apns_app where seq = #{user_seq}
+		order by push_name
+		offset #{start_pos} limit #{page_size}
+	</select>
+	
+	<!-- public String getGcmProjNum(@Param("user_seq") int nUserSeq, @Param("push_name") String strPushName); -->
+	<select id="getGcmProjNum" resultType="string">
+		select proj_num
+		from tb_gcm_app
+		where seq = #{user_seq}
+		and push_name = #{push_name} 
+	</select>
+	
+	<!-- public String getApnsAppId(@Param("user_seq") int nUserSeq, @Param("push_name") String strPushName); -->
+	 <select id="getApnsAppId" resultType="string">
+		select app_id
+		from tb_apns_app
+		where seq = #{user_seq}
+		and push_name = #{push_name}
+	</select>
+	
+	 <!-- public List<String> 
+	 getPushDeviceList(@Param("proj_num") String strProjNum, @Param("app_id") String strAppId, @Param("start_pos") int nStartPos, @Param("page_size") int nPageSize); 
+	  -->
+	<select id="getPushDeviceList" resultType="string">
+		select device_id
+		from tb_device 
+		where app_info_id in ( #{proj_num}, #{app_id} )
+		order by seq
+		offset #{start_pos} limit #{page_size}
+	</select>
+	
+	<select id="getPushDeviceListEx" resultType="DeviceIdInfo">
+		select seq, device_id
+		from tb_device 
+		where app_info_id in ( #{proj_num}, #{app_id} )
+		order by seq
+		offset #{start_pos} limit #{page_size}
+	</select>
+	
+	<!-- public List<String> getPushGroupDeviceSeqList(@Param("group_id") String strGroupId); -->
+	<select id="getPushGroupDeviceSeqList" resultType="string">
+		select device_seq_list
+		from tb_group
+		where group_id = #{group_id}
+	</select>
+	
+	<!-- public List<DeviceIdInfo> getPushGroupDeviceListEx(@Param("group_id") String strGroupId); -->
+	<select id="getPushGroupDeviceListEx" resultType="DeviceIdInfo">
+		select seq, device_id
+		from tb_device
+		where seq = any(
+			(select device_seq_list
+			from tb_group
+			where group_id = #{group_id})::Integer[]
+		)
+	</select>
+	
+	<!-- public List<DeviceTokenExInfo> getPushGroupDeviceTokenExList(@Param("group_id") String strGroupId); -->
+	<select id="getPushGroupDeviceTokenExList" resultType="DeviceTokenExInfo">
+		select seq, device_type, device_token
+		from tb_device
+		where seq = any(
+			(select device_seq_list
+			from tb_group
+			where group_id = #{group_id})::Integer[]
+		)
+	</select>
+	
+	<!-- public List<DeviceTokenExInfo> getGcmGroupDeviceTokenExList(@Param("group_id") String strGroupId); -->
+	<select id="getGcmGroupDeviceTokenExList" resultType="DeviceTokenExInfo">
+		select seq, device_type, device_token
+		from tb_device
+		where seq = any(
+			(select device_seq_list
+			from tb_group
+			where group_id = #{group_id})::Integer[]
+		)
+		and device_type = 'a'
+	</select>
+	
+	<!-- public List<DeviceTokenExInfo> getApnsGroupDeviceTokenExList(@Param("group_id") String strGroupId); -->
+	<select id="getApnsGroupDeviceTokenExList" resultType="DeviceTokenExInfo">
+		select seq, device_type, device_token
+		from tb_device
+		where seq = any(
+			(select device_seq_list
+			from tb_group
+			where group_id = #{group_id})::Integer[]
+		)
+		and device_type = 'i'
+	</select>
+	
+	<!-- public void addDeviceSeqToGroup(@Param("group_id") String strGroupId, @Param("device_seq") int nDeviceSeq); -->
+    <update id="addDeviceSeqToGroup">
+		update tb_group
+	    set device_seq_list = ( #{device_seq} || device_seq_list )
+	    where group_id = #{group_id} 
+	</update>
+	
+    <!-- public void removeDuplicateSeqFromGroup(@Param("group_id") String strGroupId); -->
+    <update id="removeDuplicateSeqFromGroup">
+		update tb_group
+	    set device_seq_list = (
+	    	select array(select distinct(unnest(device_seq_list)) from tb_group where group_id = #{group_id})
+	    )
+	    where group_id = #{group_id}
+	</update>
+	
+    <!-- public void deleteDeviceSeqFromGroup(@Param("group_id") String strGroupId, @Param("device_seq") int nDeviceSeq); -->
+    <update id="deleteDeviceSeqFromGroup">
+		update tb_group
+	    set device_seq_list = array_remove( device_seq_list, #{device_seq} )
+	    where group_id = #{group_id} 
+	</update>
+	
+	<!-- GcmUser -->
+<!--	
+	<select id="getUserCount" parameterType="string" resultType="int">
+		select coalesce(COUNT(email), 0) 
+		from tb_gcm_user
+		WHERE email = #{email}
+	</select>
+	
+	<select id="getUserSeq" parameterType="string" resultType="int">
+	    select coalesce(
+			( select seq from tb_gcm_user WHERE email = #{email} ),
+			0
+		)
+	</select>
+	
+	<delete id="deleteGcmDeviceToken" parameterType="string">
+		delete from tb_gcm_user
+		where device_token=#{device_token}
+		and active = 'N'
+	</delete>
+	
+	<insert id="insertUser" parameterType="GcmUserInfo">
+		insert into tb_gcm_user (email, alias, device_token, proj_num)
+		values ( #{email}, #{alias}, #{device_token}, #{proj_num} );
+	</insert>
+	
+	<update id="updateUser" parameterType="GcmUserInfo">
+		update tb_gcm_user
+		set  email = #{email}, alias = #{alias}, device_token = #{device_token}, proj_num = #{proj_num}, reg_tm = now()
+		where seq = #{seq}
+	</update>
+
+	<update id="activateGcmUser" parameterType="string">
+		update tb_gcm_user
+		set  active = 'Y'
+		where email = #{email}
+	</update>
+	
+	<delete id="deleteGcmUser">
+		delete from tb_gcm_user
+		where email=#{email}
+		and active = 'N'
+	</delete>
+	
+	<update id="loginGcmUser" parameterType="string">
+		update tb_gcm_user
+		set  reg_tm = now()
+		where email = #{email}
+	</update>
+	
+	<select id="getGcmKeyToken" parameterType="string" resultType="KeyTokenInfo">
+	    select a.api_key, b.device_token
+		from tb_gcm_app a, tb_gcm_user b
+		where b.email = #{email}
+		and b.proj_num = #{proj_num}
+		and a.proj_num = b.proj_num
+	</select>
+-->
+	
+		
+	<!-- Push Info for Gcm -->
+	<insert id="registerGcmPush">
+	    <selectKey keyProperty="selectSeq" resultType="int" order="BEFORE">
+			select seq from tb_push_user where email = #{email}
+		</selectKey> 
+		insert into tb_gcm_app (seq, push_name, proj_num, api_key) values 
+		( #{selectSeq}, #{push_name}, #{proj_num}, #{api_key} )
+	</insert>
+	
+	<!-- Get api Key and device token  -->
+	<select id="getApiKey" resultType="string">
+		select a.api_key
+		from tb_gcm_app a, tb_push_user b
+		where b.seq = #{user_seq}
+		and a.seq = b.seq
+		and a.push_name = #{push_name}
+	</select>
+	
+	<!--  -->
+	<select id="getProjNum" resultType="string">
+		select a.proj_num
+		from tb_gcm_app a, tb_push_user b
+		where b.seq = #{user_seq}
+		and a.seq = b.seq
+		and a.push_name = #{push_name}
+	</select>
+	
+	<!-- public List<RegisterGcmInfo> getGcmPushList(int nUserSeq); -->
+	<select id="getGcmPushList" parameterType="int" resultType="RegisterGcmInfo">
+		select push_name, proj_num, api_key
+		from tb_gcm_app a, tb_push_user b
+		where a.seq = #{seq}
+		and a.seq = b.seq
+	</select>
+	
+	<!-- Group work -->
+	<!--
+	public List<String> getPushGroupList(GroupWorkInfo info); 
+	 -->
+	 <!-- public void createGroup(GroupWorkInfo info); -->
+	<insert id="createGroup" parameterType="GroupWorkInfo">
+		insert into tb_group (group_id, push_user_seq, push_name) values 
+		( #{group_id}, #{push_user_seq}, #{push_name}  )
+	</insert>
+	
+	<!-- public void deleteGroup(@Param("group_id") String strGroupId); -->
+	<delete id="deleteGroup">
+	    delete from tb_group
+	    where group_id = #{group_id}
+	</delete>
+	
+	<!-- public List<String> getPushGroupList(@Param("user_seq") int nUserSeq); -->
+	<select id="getPushGroupList" resultType="string">
+		select group_id
+		from tb_group
+	    where push_user_seq = #{push_user_seq}
+	</select>
+	
+	<!-- ///////////////////////////////////////////////////// -->
+	<!-- Gcm Group work -->
+	<insert id="createGcmGroup" parameterType="GroupWorkInfo">
+		insert into tb_gcm_group (seq, push_name, group_id) values 
+		( #{user_seq}, #{push_name}, #{group_id} )
+	</insert>
+	
+	<delete id="deleteGcmGroup" parameterType="GroupWorkInfo">
+	    delete from tb_gcm_group
+	    where seq = #{user_seq}
+	    and push_name = #{push_name}
+	    and group_id = #{group_id}
+	</delete>
+	
+	<!--
+	public List<String> getGcmGroupList(GroupWorkInfo info);
+	-->
+	<select id="getGcmGroupList" parameterType="GroupWorkInfo" resultType="string">
+		select group_id
+		from tb_gcm_group
+	    where seq = #{user_seq}
+	    and push_name = #{push_name}
+	</select>
+	
+	<!-- public List<Integer> getGcmDeviceSeqList(List<String> arrDeviceId); -->
+	<select id="getGcmDeviceSeqList" parameterType="list" resultType="int">
+		select seq 
+		from tb_gcm_device
+		WHERE device_id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+	</select>
+	
+	<!-- public List<Integer> getGcmDeviceTokenList(List<String> arrDeviceToken); -->
+	<select id="getGcmDeviceTokenList" parameterType="list" resultType="int">
+		select seq 
+		from tb_gcm_device
+		WHERE device_token in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+	</select>
+	
+	<!--  public List<Integer> getGcmGroupData(GroupWorkInfo info);  -->
+	<select id="getGcmGroupData" parameterType="GroupWorkInfo" resultType="string">
+		select device_seq_list
+		from tb_gcm_group
+	    where seq = #{user_seq}
+	    and push_name = #{push_name}
+	    and group_id = #{group_id}
+	</select>
+	
+	<!--
+	public void updateGcmGroupData(@Param("group_info") GroupWorkInfo info, @Param("seq_list") List<Integer> arrDeviceSeq);
+	-->
+	<update id="updateGcmGroupData">
+	    update tb_gcm_group
+	    set device_seq_list = 
+	    <foreach item="item" index="index" collection="seq_list" open="array[" separator="," close="]::Integer[]">
+        	#{item}
+  		</foreach>
+	    where seq = #{user_seq}
+	    and push_name = #{push_name}
+	    and group_id = #{group_id}
+	</update>
+	
+	<!-- public void deleteGcmGroupData(GroupWorkInfo info); -->
+	<update id="deleteGcmGroupData" parameterType="GroupWorkInfo" >
+	    update tb_gcm_group
+	    set device_seq_list = null
+	    where seq = #{user_seq}
+	    and push_name = #{push_name}
+	    and group_id = #{group_id}
+	</update>
+	
+	<!--  public String getGcmGroupDeviceSeqList(GroupWorkInfo info); -->
+	<select id="getGcmGroupDeviceSeqList" parameterType="GroupWorkInfo" resultType="string">
+		select device_seq_list
+		from tb_gcm_group
+		where seq = #{user_seq}
+		and push_name = #{push_name}
+		and group_id = #{group_id}
+	</select>
+	
+	<!--
+	public int updateUserToChatRoom(@Param("list") List<Integer> lParam, @Param("path") String strPath);
+	// List<Integer> lParam = getUserSeqList(strPath);
+	// userMapper.updateUserToChatRoom(lParam, strPath);
+	<update id="updateUserToChatRoom">
+		update tb_chat_room set
+		users = 
+		<foreach item="item" index="index" collection="list" open="array[" separator="," close="]::Integer[]">
+        	#{item}
+  		</foreach>
+		where path = #{path}
+	</update>
+	-->
+	
+	<!-- Apns Group work -->
+	<insert id="createApnsGroupId" parameterType="GroupWorkInfo">
+		insert into tb_apns_group (seq, push_name, group_id) values 
+		( #{user_seq}, #{push_name}, #{group_id} )
+	</insert>
+	
+	<delete id="deleteApnsGroupId" parameterType="GroupWorkInfo">
+	    delete from tb_apns_group
+	    where seq = #{user_seq}
+	    and push_name = #{push_name}
+	    and group_id = #{group_id}
+	</delete>
+	
+	<update id="updateApnsGroupData" parameterType="GroupWorkInfo">
+	    update tb_apns_group
+	    set device_token_list = 
+	    <foreach item="item" index="index" collection="list" open="array[" separator="," close="]::Integer[]">
+        	#{item}
+  		</foreach>
+	    where seq = #{user_seq}
+	    and push_name = #{push_name}
+	    and group_id = #{group_id}
+	</update>
+	
+	<!--  public String getApnsGroupDeviceSeqList(GroupWorkInfo info); -->
+	<select id="getApnsGroupDeviceSeqList" parameterType="GroupWorkInfo" resultType="string">
+		select device_seq_list
+		from tb_apns_group
+		where seq = #{user_seq}
+		and push_name = #{push_name}
+		and group_id = #{group_id}
+	</select>
+	
+	
+	
+	<!-- Push Info for APNS -->
+	<insert id="registerApnsPush" parameterType="RegisterApnsInfo">
+		insert into tb_apns_app (seq, push_name, app_id, sandbox, cert_file_path, cert_pwd) values 
+		( #{seq}, #{push_name}, #{app_id}, #{sandbox}, #{cert_file_path}, #{cert_pwd} )
+	</insert>
+	
+	<!--
+	public RegisterApnsInfo getApnsCertInfo(@Param("user_seq") int nUserSeq, @Param("push_name") String strPushName); 
+	 -->
+	<select id="getApnsCertInfo" resultType="RegisterApnsInfo">
+		select b.seq, a.push_name, a.sandbox, a.app_id, a.cert_file_path, a.cert_pwd
+		from tb_apns_app a, tb_push_user b
+		where b.seq = #{user_seq}
+		and a.seq = b.seq
+		and a.push_name = #{push_name}
+	</select>
+	
+	<!-- public List<String> getAllApnsDeviceTokenList(String strAppId); -->
+	<select id="getAllApnsDeviceTokenList" parameterType="string" resultType="string">
+		select device_token
+		from tb_device
+		where device_type = 'i' 
+		and app_info_id = #{app_id} 
+	</select>
+	
+	<!-- public List<RegisterApnsInfo> getApnsPushList(int nUserSeq); -->
+	<select id="getApnsPushList" parameterType="int" resultType="RegisterApnsInfo">
+		select push_name, app_id
+		from tb_apns_app a, tb_push_user b
+		where a.seq = #{seq}
+		and a.seq = b.seq
+	</select>
+	
+	
+	<!-- Push Info for External Link -->
+	
+	<!--  public void insertDeviceMap(DeviceMapInfo info);-->
+    <insert id="insertDeviceMap" parameterType="DeviceMapInfo">
+		insert into tb_device_map (device_id, device_seq)
+		values ( #{device_id}, #{device_seq} );
+	</insert>
+	
+	<!-- public void updateDeviceMap(DeviceMapInfo info);-->
+	<!-- device_seq/device_id 는 pk 이어서 update 가 무의미 하다.
+	<update id="updateDeviceMap" parameterType="DeviceMapInfo">
+		update tb_device_map
+		set device_seq = #{device_seq}
+		where push_user_seq = #{push_user_seq}
+		and push_name = #{push_name}
+		and app_info_id = #{app_info_id}
+	</update>
+	-->
+	
+	<!-- public void deleteDeviceMap(DeviceMapInfo info); -->
+	<delete id="deleteDeviceMap">
+	    delete from tb_device_map
+	    where push_user_seq = #{push_user_seq}
+		and push_name = #{push_name}
+		and app_info_id = #{app_info_id} 
+	</delete>
+	
+	<!-- public int hasDeviceMap(DeviceMapInfo info); -->
+	<select id="hasDeviceMap" parameterType="DeviceMapInfo" resultType="int">
+		SELECT COUNT(device_seq) FROM tb_device_map
+		WHERE device_id = #{device_id}
+		and device_seq = #{device_seq}
+	</select>
+	
+	<!-- //////////////////////////////////////////////////////////// -->
+	
+	<!-- public int hasExternalID(String strExternalID); -->
+	<select id="hasExternalID" parameterType="string" resultType="int">
+		SELECT COUNT(device_id) FROM tb_device_map
+		WHERE device_id = #{device_id}
+	</select>
+	
+	<!-- public int hasSameAExternalID(@Param("device_id") String strDevicelID, @Param("device_token") String strDevicelToken); -->
+	<select id="hasSameAExternalID" resultType="int">
+		SELECT COUNT(*) FROM tb_gcm_device
+		WHERE seq = (
+			SELECT device_seq from tb_device_map
+			WHERE device_id = #{device_id}
+		)
+		AND device_token = #{device_token}
+	</select>
+	
+	<!-- public int hasSameIExternalID(@Param("device_id") String strDevicelID, @Param("device_token") String strDevicelToken); -->
+	<select id="hasSameIExternalID" resultType="int">
+		SELECT COUNT(*) FROM tb_apns_device
+		WHERE seq = (
+			SELECT device_seq from tb_device_map
+			WHERE device_id = #{device_id}
+		)
+		AND device_token = #{device_token}
+	</select>
+	
+	<!-- 사이트 1개만 사용할 수 있는 simple version, 복수의 사이트에서 사용시는 push_user_seq 및 push_name 도 같이 고려해야 한다. -->
+	<!-- public CommonDeviceInfo getDeviceInfo(String strExternalID); -->
+	<select id="getDeviceInfo" parameterType="string" resultType="CommonDeviceInfo">
+	    select device_type, device_seq, 'na' as device_token from tb_device_map where device_id = #{external_id}
+	</select>
+	
+	<!-- public String getDeviceTokenA(CommonDeviceInfo info); -->
+	<select id="getDeviceTokenA" parameterType="CommonDeviceInfo" resultType="string">
+	    select device_token
+		from tb_gcm_device
+		where seq = #{device_seq}
+	</select>
+	
+	<!-- public String getDeviceTokenI(CommonDeviceInfo info); -->
+	<select id="getDeviceTokenI" parameterType="CommonDeviceInfo" resultType="string">
+	    select device_token
+	    from tb_apns_device
+	    where seq = #{device_seq}
+	</select>
+	
+	<!-- ////////////////////////////////////////////////////////////////////// -->
+	<!-- 미적용된 개발중인 내용들 -->
+	<!--  public String getDeviceTokenA(String strSiteId); -->
+	<!--
+	<select id="getDeviceTokenA" parameterType="string" resultType="ExtSiteDeviceInfo">
+		select 'a' as type, seq, device_token
+		from tb_gcm_device
+		where device_id = #{site_id}
+	</select>
+	-->
+	
+	<!--  public String getDeviceTokenI(String strSiteId); -->
+	<!--  
+	<select id="getDeviceTokenI" parameterType="string" resultType="ExtSiteDeviceInfo">
+		select 'i' as type, seq, device_token
+		from tb_apns_device
+		where device_id = #{site_id}
+	</select>
+	-->
+	
+	<!-- public List<String> getExtDeviceListA(@Param("ext_id_list") List<String> ext_id_list); --> 
+	<select id="getExtDeviceListA" resultType="string">
+		select device_token
+		from tb_gcm_device
+		where device_id in
+		<foreach item="item" index="index" collection="ext_id_list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+	</select>
+	
+	<!-- public List<String> getExtDeviceListI(@Param("ext_id_list") List<String> ext_id_list); -->  
+	<select id="getExtDeviceListI" resultType="string">
+		select device_token
+		from tb_apns_device
+		where device_id in
+		<foreach item="item" index="index" collection="ext_id_list" open="(" separator="," close=")">
+        	#{item}
+  		</foreach>
+	</select>
+	
+</mapper>

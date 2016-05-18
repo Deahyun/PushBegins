@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>회원 가입</title>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
+<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<script>
+	function openSearchWindow()
+	{
+		w = 425, h=300;
+		sw = screen.availWidth;
+		sh = screen.availHeight;
+		//alert(sw + " / " + sh);
+
+		px = (sw-w) / 2;
+		py = (sh-h) / 2;
+		//alert(px + " / " + py);
+
+		var searchWindow;
+		if ((searchWindow == null) || (searchWindow.closed)) {
+			searchWindow = window.open("search_school.html", "searchWindow", "top=" + py + ",left="+ px + ",width=425,height=300,menubar=no,scrollbars=no", true) ;
+		}
+		searchWindow.focus();
+	}
+</script>
+<script type="text/javascript">
+	$(document).ready( function() {
+		//
+		var code_verify = false;
+		//
+		$("#join").click( function() {
+			var email = $("#email").val();
+			var pwd = $("#pwd").val();
+			var retry_pwd = $("#retry_pwd").val();
+			var alias = $("#alias").val();
+			if ( email.length == 0 || pwd.length == 0 || alias.length == 0 ) {
+				$("#message").html("<font color=red size=3>모든 항목을 다 채워 주세요.</font>");
+				setTimeout(function() { 
+					$("#message").html("");
+				}, 3000);
+				return false;
+			}
+			if ( pwd != retry_pwd ) {
+				$("#message").html("<font color=red size=3>비밀번호와 비밀번호 확인값이 다릅니다.</font>");
+				setTimeout(function() { 
+					$("#message").html("");
+				}, 3000);
+				return false;
+			}
+			if ( !code_verify ) {
+				$("#message").html("<font color=red size=3>email 인증이 필요합니다.</font>");
+				setTimeout(function() { 
+					$("#message").html("");
+				}, 3000);
+				return false;
+			}
+			
+			var action = $("#join_user").attr('action');
+			var form_data = {
+				email: $("#email").val(),
+				pwd: $("#pwd").val(),
+				alias: $("#alias").val(),
+				is_ajax: 1
+			}; // var
+		$.ajax({
+			type: "POST",
+			url: action,
+			data: form_data, 
+			success: function(response) {
+				if ( response == 'success' ) {
+					$("#join_user").slideUp('slow', function() {
+						window.location.href = "push_usage.jsp";
+					  });
+				} else {
+					//alert(response);
+					$("#message").html("<font color=red size=3>이미 사용중인 email 정보입니다.</font>");
+					setTimeout(function() {
+						$("#message").html("");
+					}, 3000);
+				}
+			} // function
+			}); // $.ajax
+			return false;
+		}); // join click(function()
+				
+		//
+		// code_request
+		$("#code_request").click( function() {
+			var email = $("#email").val();
+			if ( email.length < 7 || email.indexOf("@") == -1 ) {
+				$("#message").html("<font color=red size=3>이메일 형식이 잘못되었습니다.</font>");
+				setTimeout(function() { 
+					$("#message").html("");
+				}, 3000);
+				return false;
+			}
+			
+			$("#message").html("<font color=blue size=3>email 을 보내는 중입니다. 조금만 기다려 주세요</font>");
+			setTimeout(function() {
+				$("#message").html("");
+			}, 3000);
+			
+			var action = "email_code_req.jsp";
+			var form_data = {
+				email: $("#email").val(),
+				request_type: "code_request"
+			}; // var
+		$.ajax({
+			type: "POST",
+			url: action,
+			data: form_data, 
+			success: function(response) {
+				if ( response == "success" ) {
+					$("#message").html("<font color=blue size=3>정상적으로 code 를 발송했습니다.</font>");
+					setTimeout(function() {
+						$("#message").html("");
+					}, 5000);
+				} else {
+					alert(response);
+					$("#message").html("<font color=red size=3>유효하지 않은 email 정보입니다.</font>");
+					setTimeout(function() {
+						$("#message").html("");
+					}, 5000);
+				}
+			} // function
+			}); // $.ajax
+			return false;
+		}); // code_request click(function())
+		
+		//
+		// code_validate
+		$("#code_validate").click( function() {
+			var email = $("#email").val();
+			var code = $("#code").val();
+			if ( code.length == 0 ) {
+				$("#message").html("<font color=red size=3>인증코드값이 잘못되었습니다.</font>");
+				setTimeout(function() { 
+					$("#message").html("");
+				}, 3000);
+				return false;
+			}
+			
+			var action = "email_code_req.jsp";
+			var form_data = {
+				email: $("#email").val(),
+				validate_code: $("#code").val(),
+				request_type: "code_validate"
+			}; // var
+		$.ajax({
+			type: "POST",
+			url: action,
+			data: form_data, 
+			success: function(response) {
+				if ( response == "success" ) {
+					code_verify = true;
+					$("#message").html("<font color=blue size=3>email 인증이 완료되었습니다.</font>");
+					setTimeout(function() {
+						$("#message").html("");
+					}, 3000);
+				} else {
+					//alert(response);
+					$("#message").html("<font color=red size=3>email 인증에 실패했습니다.</font>");
+					setTimeout(function() {
+						$("#message").html("");
+					}, 3000);
+				}
+			} // function
+			}); // $.ajax
+			return false;
+		}); // code_validate
+				
+	}); // ready(function()
+</script>
+</head>
+ 
+<body>
+<div id="wrap">
+	<!-- header -->
+    <div id="header">
+   	    <p class="logout">
+   	    <!--
+   	    <a href="logout.jsp"><span>로그아웃</span></a>
+   	    -->
+   	    </p>
+        <div class="menu">
+        	<a href="login.html"><font color="blue">PushBegins</font></a>
+        	<!--
+        	<a href="http://www.chodings.com/"><img src="common/images/chodings.png" alt="chodings.com 로고" /></a>
+        	 -->
+        	<!--
+        	<ul>
+                <li class="menu_bar_no"><a href="show_user_list.jsp?param_0=smart">학생 목록</a></li>
+            </ul>
+            <ul>
+            	<li><a href="show_messages_list.jsp?param_0=smart">알림장 목록</a></li>
+            </ul>
+            <ul>
+                <li class="menu_bar_no"><a href="register_message.jsp">알림장 작성</a></li>
+            </ul>
+            -->
+    	</div>
+    </div>
+    <!-- //header -->
+    
+    <!-- join_content -->
+    <div id="join_content">
+    	<!-- 타이틀 -->
+    	<!--
+        <div class="title" >
+            <img src="common/images/bullet_title.gif" width="17" height="17" alt="" /> <span>회원가입</span>
+        </div>
+        -->
+        <!-- //타이틀 -->
+        
+        <!-- 회원가입 -->
+        <form id="join_user" action="join_req.jsp" method="post">
+			<table width=680 cellpadding=0 cellspacing=0 border=0 align=center>
+			  <tr>
+			    <td>
+				<table width=100% cellpadding=0 cellspacing=0 border=0>
+				  <tr>
+				    <td><p class="m_title2">* 회원가입</p></td>
+				  </tr>
+				  <tr>
+				  
+				  </tr>
+				  <tr><td bgcolor="#ff5d00" height=2></td></tr>
+				  <tr><td height=6></td></tr>
+				</table>
+				
+				<table width=100% cellpadding=0 cellspacing=3 border=0>
+				<col width=140>
+				<col width="*">
+				  <tr>
+				    <td class=m_title>이메일</td>
+					<td class='m_padding lh'>
+					<input id="email" class=inputed type=text maxlength="50" placeholder="ID 로 사용할 email 주소">&nbsp
+					<input id="code_request" class="search" type="button" value="코드요청">
+					<br>
+					<span class="cmt">
+					* ID 로 사용할 email 주소. [코드요청] 버튼 클릭후 이메일을 확인해주세요.<br>
+					</span><br>
+					<input class=inputed type="text" id="code" maxlength="6" placeholder="email 로 전달된 값">&nbsp
+					<input id="code_validate" class="search" type="button" value="코드확인">
+					<br>
+					<span class="cmt">
+					* 이메일로 전송된 인증코드 값을 입력후 [코드확인] 버튼을 눌러 주세요.
+					</span>
+					</td>
+				  </tr>
+				  <tr>
+				    <td class=m_title>비밀번호</td>
+					<td class=m_padding><input class=inputed type=password id="pwd" placeholder="비밀번호"></td>
+				  </tr>
+				  <tr>
+				    <td class=m_title>비밀번호 확인</td>
+					<td class=m_padding><input class=inputed type=password id="retry_pwd" placeholder="비밀번호 확인"></td>
+				  </tr>
+				  <tr>
+				    <td class=m_title>이름(별명)</td>
+					<td class='m_padding lh'>
+					<input class=inputed type=text id="alias"  maxlength="20" placeholder="사용자 이름(별명)">
+					</td>
+				  </tr>
+				</table>
+				<br>
+				<p align=center><input type=image id="join" src="images/join_ok_btn.gif" ></p>
+				<br><p id="message" align=center></p>
+				</td>
+			  </tr>
+			</table>
+		</form>
+        <!-- //회원가입 -->
+	</div>
+	<!-- //join_content -->
+</div>
+</body>
+</html>

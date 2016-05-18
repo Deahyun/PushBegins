@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<title>PushBegins Login</title>
+	<link rel="stylesheet" type="text/css" href="css/login.css" media="all" />
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript">
+$(document).ready( function() {
+	//
+	$("#login").click( function() {
+		var u_id = $("#user_id").val();
+		var u_pwd = $("#user_pwd").val();
+		if ( u_id.length == 0 || u_pwd.length == 0 ) {
+			$("#message").html("<font color=blue>필요한 값이 없습니다.</font>");
+			setTimeout(function() { 
+				$("#message").html("");
+			}, 3000);
+			return false;
+		}
+		var action = $("#form1").attr('action');
+		var form_data = {
+			user_id: $("#user_id").val(),
+			user_pwd: $("#user_pwd").val(),
+			is_ajax: 1
+		}; // var
+	$.ajax({
+		type: "POST",
+		url: action,
+		data: form_data, 
+		success: function(response) {
+			//alert(response);
+			if ( response == 'ok' ) {
+				$("#form1").slideUp('normal', function() {
+					//window.location.href = "push_usage.jsp";
+					window.location.href = "100_register_push.jsp";
+				  });
+			} else {
+				//alert(response);
+				$("#message").html("<font color=blue>로그인 정보가 틀립니다.</font>");
+				setTimeout(function() {
+					$("#message").html("");
+				}, 3000);
+			}
+		} // function
+		}); // $.ajax
+		return false;
+	}); // click(function()
+
+	////
+	$("#find_pwd").click( function() {
+		$("#message").html("<font color=red>id@entertera.com 으로 <br>비밀번호 요청 이메일 보내주세요</font>");
+		setTimeout(function() {
+			$("#message").html("");
+		}, 10000);
+	});
+	
+	
+	////
+}); // ready(function()
+</script>
+	</head>
+	<body>
+		<form id="form1" action="auth_user.jsp" method="post">
+			<fieldset>
+				<legend>PUSHBEGINS LOGIN</legend>
+				<label for="user_id">사용자이메일: </label><input type="text" id="user_id"/>
+				<label for="user_pwd">비밀번호입력: </label><input type="password" id="user_pwd"/>
+				<input type="button" value="로그인" id="login" />
+				<a id="find_pwd">비밀번호 찾기</a>
+				<a href="join.html">회원가입</a>
+			</fieldset>
+		</form>
+		<div><p id="message"></p></div>
+	</body>
+</html>

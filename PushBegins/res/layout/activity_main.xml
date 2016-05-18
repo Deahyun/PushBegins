@@ -100,13 +100,13 @@
 
         <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="280dp"
+                android:layout_height="240dp"
                 android:orientation="vertical"
                 android:background="@color/user1">
 	        <ScrollView
 	            android:id="@+id/scrollView1"
 	            android:layout_width="fill_parent"
-	            android:layout_height="272dp"
+	            android:layout_height="232dp"
 	            android:background="@color/white"
 	            android:layout_margin="4dp" >
 	
@@ -144,6 +144,15 @@
             android:layout_height="34dp"
             android:background="@drawable/round_button1"
             android:text="받은 push 목록 보기" />
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="8dp" />
+        <Button
+            android:id="@+id/buttonConfirm"
+            android:layout_width="fill_parent"
+            android:layout_height="34dp"
+            android:background="@drawable/round_button1"
+            android:text="메시지 수신 확인" />
         <View
             android:layout_width="fill_parent"
             android:layout_height="8dp" />

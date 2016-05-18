@@ -280,6 +280,56 @@ public class UserHttpClient {
 		return bResult;
 	}
 	
+	// device_seq = MiniPushObject.getInstance().getValue(DbDef.DEVICE_SEQ)
+	public boolean confirmMessage(long message_id, int device_seq) {
+		//
+		//MiniPushObject obj = MiniPushObject.getInstance();
+		//String strUrl  = String.format("%s", obj.web_url);
+		String strUrl  = String.format("%s", strServerAddress);
+		//
+		boolean bResult = false;
+		//
+		JSONObject req = new JSONObject();
+		try {
+			//
+			req.put("io_kind", "confirm_message_req");
+			req.put("m_id", message_id);
+			req.put("device_seq", device_seq);
+			
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+		
+		//
+		String strResponse = jsonRequest(strUrl, req.toString());
+		if ( strResponse == null || strResponse.length() == 0 ) {
+			return bResult;
+		}
+		if ( bDebug )
+			Log.i(tag, strResponse);
+		
+		// parse response
+		JSONObject jo = null;
+
+		try {
+			jo = new JSONObject(strResponse);
+
+			//String strIoKind = jo.getString("io_kind").toString();
+			String strResult = jo.getString("result").toString();
+			if ( strResult.compareTo("yes") != 0 ) {
+				return bResult;
+			}
+			//strResult = jo.getString("user_id").toString();
+			bResult = true;
+
+		} catch ( Exception e ) {
+			e.printStackTrace();
+			return bResult;
+		}
+
+		return bResult;
+	}
+	
 	//
 	public boolean sendCustomerMessage(int nDeviceSeq, String strProjectNumber, String strMessage) {
 		String strUrl  = String.format("%s", strServerAddress);
